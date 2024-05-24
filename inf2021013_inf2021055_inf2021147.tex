@@ -1,0 +1,987 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[english,greek]{babel}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,    
+    urlcolor=cyan
+}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\paragraph}[1]{\par\noindent\refstepcounter{paragraph}{\theparagraph.}\quad#1}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{green},
+    commentstyle=\color{green},
+    backgroundcolor=\color{yellow!10},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+}
+
+\begin{document}
+\begin{titlepage}
+
+    \fontsize{60pt}{35pt}\selectfont
+    \centering{\textbf{ΤΕΧΝΟΛΟΓΙΑ ΛΟΓΙΣΜΙΚΟΥ}}
+    \begin{center}
+        \Large
+        \Huge
+        \vfill
+        Ιονιο Πανεπιστήμιο
+        \vfill
+        \includegraphics[width=0.4\textwidth]{assets/ionio.jpg}
+        \vfill
+        \fontsize{23pt}{23pt}\selectfont
+        \vspace{0.3cm}
+        \Huge
+        \textbf{Αναφορά Εφαρμογής \\ \fontsize{15pt}{15pt}\selectfont Aνάλυσης και Οπτικοποίησης Δεδομένων με Αλγορίθμους Μηχανικής Μάθησης}
+        
+        \vspace{0.3cm}
+        \large
+        Χρησιμοποιώντας την \selectlanguage{english}python\selectlanguage{greek} βιβλιοθήκη \selectlanguage{english}Streamlit\selectlanguage{greek}
+        \Huge
+        \vspace{1cm}
+        
+        \textbf{Ομάδα Ανάπτυξης \selectlanguage{english}TechTeam-inf2021\selectlanguage{greek}}
+        
+        \vfill
+        
+        \Large
+        \textbf{Μέλη:}
+        \vspace{0.3cm}
+        
+        \Large
+        Νικόλας Αναγνωστόπουλος - \selectlanguage{english}inf\selectlanguage{greek}2021013\\
+        Παναγιώτης Μουρελάτος - \selectlanguage{english}inf\selectlanguage{greek}2021147\\
+        Αχιλλέας Ζερβός - \selectlanguage{english}inf\selectlanguage{greek}2021055
+        
+        
+        
+        
+        
+        
+        
+        
+    \end{center}
+\end{titlepage}
+
+\selectlanguage{greek}
+
+
+
+\newpage
+
+
+
+\selectlanguage{greek}
+
+\tableofcontents
+
+
+\newpage
+
+
+
+\section{Εισαγωγή}
+Στη συγκεκριμένη αναφορά παρουσιάζουμε την εφαρμογή μας που δημιουργήσαμε μέσω της βιβλιοθήκης της \selectlanguage{english} python, streamlit\selectlanguage{greek}. Σε αυτή την εφαρμογή δίνεται η δυνατότητα στον χρήστη να κάνει υψηλές αναλύσεις και οπτικοποιήσεις δεδομένων μέσω ορισμένων αλγορίθμων οπτικοποίησης καθώς επίσης και να συγκρίνει αλγορίθμους μηχανικής μάθησης για να ανακαλύψει ποιος αλγόριθμος είναι ο πιο ιδανικός και ακριβής για τα δικά του δεδομένα. Στα παρακάτω κεφάλαια, παρουσιάζουμε τη σχεδίαση της εφαρμογής μας μέσω διαγράμματος \selectlanguage{english}UML\selectlanguage{greek}, τις προγραμματιστικές επιλογές και αποφάσεις που πήραμε για την επιτυχή ανάπτυξη της εφαρμογής, μία σύντομη καθοδήγηση για το πώς ο χρήστης να τρέξει την εφαρμογή μας (είτε μέσω \selectlanguage{english}Docker Desktop\selectlanguage{greek} είτε μέσω \selectlanguage{english}python venv\selectlanguage{greek}), ένα \selectlanguage{english}demo\selectlanguage{greek} για το πώς λειτουργεί η εφαρμογή και το τι αποτελέσματα βγάζει αν του δώσουμε συγκεκριμένο αρχείο \selectlanguage{english}csv\selectlanguage{greek}. Επίσης, αναφέρουμε πιθανούς τρόπους για το πώς θα μπορέσουμε στο μέλλον να διατηρήσουμε και να αναπτύξουμε τη συγκεκριμένη εφαρμογή, παίρνοντας παράδειγμα από το λογισμικό \selectlanguage{english}agile\selectlanguage{greek} και τέλος, κάνουμε μία σύντομη αναφορά στα μέλη της ομάδας μας καθώς και τα \selectlanguage{english}task\selectlanguage{greek} που ολοκλήρωσε το κάθε μέλος.
+
+
+
+\newpage
+
+
+\section{Σχεδίαση εφαρμογής μέσω \selectlanguage{english}UML\selectlanguage{greek} }
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=0.45\textheight]{assets/uml.jpg}
+  \caption{Δίαγραμμα Σχεδίασης Εφαρμογής (\selectlanguage{english}UML\selectlanguage{greek})}
+  \label{fig:uml}
+\end{figure}
+
+
+Το \texttt{\selectlanguage{english}UML\selectlanguage{greek}} διάγραμμα περιγράφει τη δομή και τις σχέσεις των κλάσεων σε ένα σύστημα διαχείρισης δεδομένων, μηχανικής μάθησης και οπτικοποίησης δεδομένων. Η κλάση \texttt{\selectlanguage{english}DataLoader\selectlanguage{greek}} φορτώνει δεδομένα από αρχεία \texttt{\selectlanguage{english}CSV\selectlanguage{greek}} και \texttt{\selectlanguage{english}Excel\selectlanguage{greek}}, αποθηκεύοντάς τα σε ένα \texttt{\selectlanguage{english}DataTable\selectlanguage{greek}}. Η κλάση \texttt{\selectlanguage{english}DataTable\selectlanguage{greek}} διαχειρίζεται τα δεδομένα που φορτώνονται. Η κλάση \texttt{\selectlanguage{english}MachineLearning\selectlanguage{greek}} περιλαμβάνει τα υποσυστήματα \texttt{\selectlanguage{english}ClassificationTab\selectlanguage{greek}} και \texttt{\selectlanguage{english}ClusteringTab\selectlanguage{greek}} για την εκτέλεση αλγορίθμων ταξινόμησης και ομαδοποίησης αντίστοιχα, με τις κλάσεις \texttt{\selectlanguage{english}ClassificationComparison\selectlanguage{greek}} και \texttt{\selectlanguage{english}ClusteringComparison\selectlanguage{greek}} να συγκρίνουν και να εμφανίζουν τα αποτελέσματα. Η κλάση \texttt{\selectlanguage{english}Visualization2D\selectlanguage{greek}} δημιουργεί γραφήματα όπως \texttt{\selectlanguage{english}Histogramplot\selectlanguage{greek}}, \texttt{\selectlanguage{english}Density\selectlanguage{greek}}, \texttt{\selectlanguage{english}Boxplots\selectlanguage{greek}}, \texttt{\selectlanguage{english}PCAPlot\selectlanguage{greek}}, και \texttt{\selectlanguage{english}TSNEPlot\selectlanguage{greek}}. Η κλάση \texttt{\selectlanguage{english}DataFrame\selectlanguage{greek}} διαχειρίζεται δεδομένα με και χωρίς ετικέτες μέσω των κλάσεων \texttt{\selectlanguage{english}Labels\selectlanguage{greek}} και \texttt{\selectlanguage{english}NoLabels\selectlanguage{greek}}. Η \texttt{\selectlanguage{english}InfoTab\selectlanguage{greek}} προβάλλει πληροφορίες για την εφαρμογή και την ομάδα. Η κλάση \texttt{\selectlanguage{english}UserInterface\selectlanguage{greek}} διαχειρίζεται τη φόρτωση δεδομένων, την οπτικοποίηση διαγραμμάτων, τις λειτουργίες μηχανικής μάθησης και την προβολή πληροφοριών, συνδέοντας τις αντίστοιχες κλάσεις \texttt{\selectlanguage{english}DataLoader\selectlanguage{greek}}, \texttt{\selectlanguage{english}DataTable\selectlanguage{greek}}, \texttt{\selectlanguage{english}MachineLearning\selectlanguage{greek}}, \texttt{\selectlanguage{english}Visualization2D\selectlanguage{greek}}, \texttt{\selectlanguage{english}DataFrame\selectlanguage{greek}}, και \texttt{\selectlanguage{english}InfoTab\selectlanguage{greek}}.
+
+
+
+\newpage
+
+
+
+\section{Προγραμματιστηκές επιλογές}
+\subsection{\selectlanguage{english}User friendly custom theme\selectlanguage{greek} }
+Το κεντρικό \selectlanguage{english}theme\selectlanguage{greek}  της εφαρμογής βρίσκεται στο αρχείο \selectlanguage{english}\texttt{.streamlit/config.toml}\selectlanguage{greek} το οποίο περίεχει τα παρακάτω:
+\selectlanguage{english}
+\begin{lstlisting}
+[theme]
+primaryColor = "#FF00FF" # Magenta
+backgroundColor = "#002B36" # Dark teal
+secondaryBackgroundColor = "#2C3E50" # Dark slate blue
+textColor = "#F8F9FA" # Very light grey
+font = "sans serif"
+\end{lstlisting}
+\selectlanguage{greek}
+Δηλαδή ως: 
+\begin{itemize}
+  \item κυριώς χρώμα περιέχει ανοιχτό μωβ
+  \item \selectlanguage{english}background color\selectlanguage{greek} περιέχει σκούρο πρασινο-μπλε
+  \item δεύτερο \selectlanguage{english}background color\selectlanguage{greek} περιέχει ανοιχτό γκριζο
+  \item \selectlanguage{english}text color\selectlanguage{greek} ένα πολύ ανοιχτό γκρι
+\end{itemize}
+Οι συγκεκριμένς επιλογές χρωμάτων έγιναν για να μην έχει το \selectlanguage{english}default theme\selectlanguage{greek} του \selectlanguage{english}streamlit\selectlanguage{greek} αλλά να είναι λίγο πιο \selectlanguage{english}user-friendly\selectlanguage{greek} στον χρήστη.
+
+
+
+
+\newpage
+
+
+
+\subsection{\selectlanguage{english}libraries.py\selectlanguage{greek}}
+Τις βιβλιοθήκες τις βάλαμε σε ένα ξεχωστό αρχείο με όνομα \selectlanguage{english}libraries.py\selectlanguage{greek} 
+\begin{itemize}
+  \item είναι οι τρεις βασικές \selectlanguage{english}streamlit, pandas\selectlanguage{greek} και \selectlanguage{english}numpy\selectlanguage{greek} που χρειάζονται παντού.
+\end{itemize}
+Για τo \selectlanguage{english}\texttt{machine learning tab}\selectlanguage{greek} κάνουμε \selectlanguage{english}import:\selectlanguage{greek}
+\begin{itemize}
+  \item την συνάρτηση \selectlanguage{english}\texttt{train\_test\_split()}\selectlanguage{greek} για τον διαχωρισμό των δεδομένων σε \selectlanguage{english}train-test\selectlanguage{greek}.
+  \item τις συναρτήσεις \selectlanguage{english}\texttt{silhouette\_score()}\selectlanguage{greek} και \selectlanguage{english}\texttt{accuracy\_score()}\selectlanguage{greek} για υπολογισμό της ακρίβειας των αλγορίθμων.
+  \item τους αλγορίθμους μηχανικής μάθησης \selectlanguage{english}\texttt{KNeighborsClassifier, SVC, AgglomerativeClustering, AffinityPropagation} \selectlanguage{greek}.
+\end{itemize}
+Για το \selectlanguage{english}\texttt{2D visualization tab}\selectlanguage{greek} κάνουμε \selectlanguage{english}import:\selectlanguage{greek}
+\begin{itemize}
+    \item τους αλγορίθμους οπτικοποίησης \selectlanguage{english}\texttt{PCA}\selectlanguage{greek} και \selectlanguage{english}\texttt{TSNE}\selectlanguage{greek}
+    \item το \selectlanguage{english}\texttt{matplotlib.pyplot}\selectlanguage{greek} και το \selectlanguage{english}\texttt{seaborn}\selectlanguage{greek} για την οπτικοποίηση των γραφημάτων
+\end{itemize}
+
+Για το \selectlanguage{english}\texttt{app.py}\selectlanguage{greek} κάνουμε \selectlanguage{english}import:\selectlanguage{greek}
+\begin{itemize}
+    \item όλες τις συναρτήσεις από τα αρχεία που δημιουργήσαμε δηλαδή \selectlanguage{english}\texttt{DataFrame\_tab(), Visualization\_tab(), Info\_tab(), Machine\_Learning\_tab()}\selectlanguage{greek}
+\end{itemize}
+
+
+
+\newpage
+
+
+
+Στην κύρια εφαρμογή κάνουμε αρχικά \texttt{\selectlanguage{english}import\selectlanguage{greek}} οτιδήποτε υπάρχει στο αρχείο \texttt{\selectlanguage{english}libraries.py\selectlanguage{greek}} και βάζω ως τίτλο της εφαρμογής:
+\selectlanguage{english}
+\begin{lstlisting}
+2D Data Visualization - Machine learning application
+\end{lstlisting}
+\selectlanguage{greek}
+Έπειτα, με την παρακάτω εντολή:
+\selectlanguage{english}
+\begin{lstlisting}
+uploaded_file = st.file_uploader("Upload a comma-separated csv file", type="csv")
+\end{lstlisting}
+\selectlanguage{greek}
+διαβάζει οποιαδήποτε αρχείο \texttt{\selectlanguage{english}csv\selectlanguage{greek}} δώσει ο χρήστης και έπειτα δημιουργούμε 4 μας \texttt{\selectlanguage{english}tabs\selectlanguage{greek}} με την παρακάτω εντολή:
+\\
+\selectlanguage{english}
+\begin{lstlisting}
+dataFrame_tab,visualization_tab,machine_Learning_tab,info_tab = st.tabs(["DataFrame","2D Visualization","Machine Learning","info"])
+
+with info_tab:
+    Info_tab()
+\end{lstlisting}
+\selectlanguage{greek}
+όπου με το \texttt{\selectlanguage{english}with\selectlanguage{greek}} δηλώνει ότι αν ο χρήστης επιλέξει το \texttt{\selectlanguage{english}Info\_tab\selectlanguage{greek}} τότε θα εμφανίσει το περιεχόμενο της συνάρτησης που έχουμε θέσει.\\\\
+Έπειτα αν ο χρήστης βάλει κάποιο αρχείο τότε διαβάζει τα δεδομένα του και το όνομα του αρχείου και τα δίνει ως παραμέτρους στη κάθε συνάρτηση - \texttt{\selectlanguage{english}tab\selectlanguage{greek}} που χειρίζονται αυτά τα δεδομένα \\
+(όπως το \texttt{\selectlanguage{english}DataFrame\_tab, Visualization\_tab, Machine\_learning\_tab\selectlanguage{greek}}):
+\selectlanguage{english}
+\begin{lstlisting}
+# Check if a file has been uploaded
+if uploaded_file is not None:
+
+    # Read the uploaded file as a DataFrame using pandas
+    data = pd.read_csv(uploaded_file, sep=',', header=0)
+    
+    # get dataset name
+    dataset_name = uploaded_file.name.replace('.csv','').replace('_',' ')
+    # Display content based on selected tab (dataframe)
+    with dataFrame_tab:
+        DataFrame_tab(data)
+    with visualization_tab:
+        Visualization_tab(data,dataset_name)
+    with machine_Learning_tab:
+        Machine_Learning_tab(data)
+\end{lstlisting}
+\selectlanguage{greek}
+
+
+
+\newpage
+
+
+
+\subsection{\selectlanguage{english}DataFrame\_tab.py\selectlanguage{greek}}
+Στη συνάρτηση \texttt{\selectlanguage{english}DataFrame\_tab(data)\selectlanguage{greek}} που βρίσκεται μέσα στο αρχείο \texttt{\selectlanguage{english}DataFrame\_tab.py\selectlanguage{greek}} αρχικά λέει στον χρήστη να επιλέξει πως επιθυμεί να του εμφανιστούν τα δεδομένα του σε μορφή πίνακα εξαρτώμενο με το αν τα δεδομένα του έχουν \texttt{\selectlanguage{english}labels\selectlanguage{greek}} ή όχι στην τελευταία τους στήλη και αυτό το καταφέρνει με 2 \texttt{\selectlanguage{english}tabs\selectlanguage{greek}} (\texttt{\selectlanguage{english}labels, no\_labels\selectlanguage{greek}}):
+\selectlanguage{english}
+\begin{lstlisting}
+st.write("### Choose the type of your Dataframe:")
+    st.write("#### (labels or no labels)")
+    labels,no_labels = st.tabs(['Labels', 'no Labels'])
+    with labels:
+        Labels(data)
+    with no_labels: 
+        no_Labels(data)
+\end{lstlisting}
+\selectlanguage{greek}
+
+
+
+\newpage
+
+
+
+
+\subsubsection{\selectlanguage{english}no labels\selectlanguage{greek}}
+Στην περίπτωση που τα δεδομένα του χρήστη δεν έχουν \texttt{\selectlanguage{english}labels\selectlanguage{greek}} στην τελευταία τους στήλη τότε θα εμφανιστεί ολόκληρος ο πίνακας στην μορφή (\texttt{\selectlanguage{english}samples X features (SXF)\selectlanguage{greek}})
+\selectlanguage{english}
+\begin{lstlisting}
+    # no Labels title
+    st.write("## Dataset with No Labels (SXF)")
+    # Gets and writes the shape of the dataset
+    st.write('Shape of dataset:', data.shape)
+\end{lstlisting}
+\selectlanguage{greek}
+Καθώς επίσης και εμφανίζονται ορισμένες πληροφορίες του \texttt{\selectlanguage{english}dataset\selectlanguage{greek}} όπως:
+\begin{itemize}
+  \item το \texttt{\selectlanguage{english}shape\selectlanguage{greek}} του \texttt{\selectlanguage{english}dataset\selectlanguage{greek}} (π.χ. \texttt{\selectlanguage{english}(5,100)\selectlanguage{greek}})
+\end{itemize}
+
+\subsubsection{\selectlanguage{english}labels\selectlanguage{greek}}
+Στην περίπτωση που τα δεδομένα του χρήστη έχουν\texttt{\selectlanguage{english} labels\selectlanguage{greek}} στην τελευταία τους στήλη τότε θα εμφανιστούν τα δεδομένα σε δύο διαφορετικούς πίνακες στην μορφή
+\begin{itemize}
+  \item \texttt{\selectlanguage{english}samples X features (SXF)\selectlanguage{greek}}
+  \item \texttt{\selectlanguage{english}labels (F+1)\selectlanguage{greek}}
+\end{itemize}
+\selectlanguage{english}
+\begin{lstlisting}
+    # Labels title
+    st.write("## Dataset with Labels (SXF) and (F+1)")
+    # Extract the labels by popping the last column
+    labels = data.iloc[:, -1]
+    # Extract features by dropping the last column
+    features = data.iloc[:, :-1]
+\end{lstlisting}
+\selectlanguage{greek}
+
+
+
+\newpage
+
+
+
+
+Καθώς επίσης και εμφανίζονται ορισμένες πληροφορίες του \texttt{\selectlanguage{english}dataset\selectlanguage{greek}} όπως:
+\begin{itemize}
+  \item το \texttt{\selectlanguage{english}shape\selectlanguage{greek}} του \texttt{\selectlanguage{english}dataset\selectlanguage{greek}} (π.χ. (5,100))
+  \item τα μοναδικά \texttt{\selectlanguage{english}labels\selectlanguage{greek}}
+  \item τον αριθμό των μοναδικών \texttt{\selectlanguage{english}labels\selectlanguage{greek}}
+\end{itemize}
+\selectlanguage{english}
+\begin{lstlisting}
+    # Get and write shape of dataset, classes, number of classes
+    unique_labels = np.unique(labels)
+    st.write('Shape of dataset:', data.shape)
+    st.write('Classes:',unique_labels)
+    st.write('Number of classes:', len(unique_labels))
+\end{lstlisting}
+\selectlanguage{greek}
+\subsubsection{κουμπί\selectlanguage{english} show-hide dataframe\selectlanguage{greek}}
+Επειτα για είναι λίγο πιο \texttt{\selectlanguage{english}user friendly\selectlanguage{greek}} η εφαρμογή προσθέσαμε και 2 κουμπιά (\texttt{\selectlanguage{english}show\_button,hide\_button\selectlanguage{greek}}) για το κάθε \texttt{\selectlanguage{english}tab\selectlanguage{greek}} (\texttt{\selectlanguage{english}labels, no labels\selectlanguage{greek}}), που επιτρέπουν στον χρήστη να εμφανίσουν ή να κρύψουν τους πίνακες με τα δεδομένα τους όποτε θελήσουν:
+\selectlanguage{english}
+\begin{lstlisting}
+    show_data = st.button('show table',key='show_button_no_labels')
+    hide_data = st.button('hide table',key='hide_button_no_labels')
+    if show_data == True and hide_data == False:
+        st.write("## Samples X Features",data)
+    elif show_data == False and hide_data == True:
+        st.write("")
+\end{lstlisting}
+\selectlanguage{greek}
+
+
+
+
+\newpage
+
+
+
+
+
+\selectlanguage{english}\subsection{Visualization\_tab.py}\selectlanguage{greek}
+Στη συνάρτηση \texttt{\selectlanguage{english}Visualization\_tab(data,dataset\_name)\selectlanguage{greek}} που βρίσκεται μέσα στο αρχείο \texttt{\selectlanguage{english}Visualization\_tab.py\selectlanguage{greek}} αρχικά διαχωρίζονται τα δεδομένα σε \texttt{\selectlanguage{english}features\selectlanguage{greek}} και \texttt{\selectlanguage{english}labels\selectlanguage{greek}} παίρνοντας την τελευταία στήλη.
+\selectlanguage{english}
+\begin{lstlisting}
+    # visualization tab title
+    st.title('2D Visualization Tab')
+    # Extract the labels by popping the last column
+    labels = data.iloc[:, -1]
+    # Extract features by dropping the last column
+    features = data.iloc[:, :-1]
+\end{lstlisting}
+\selectlanguage{greek}
+Έπειτα στην περίπτωση που τα \texttt{\selectlanguage{english}labels\selectlanguage{greek}} περιέχουν οποιαδήποτε \selectlanguage{english}string\selectlanguage{greek} τότε φτιάχνουμε μία νέα στήλη με τα \texttt{\selectlanguage{english}labels encoded\selectlanguage{greek}} σε αριθμούς, δίνουμε το \selectlanguage{english}column name \selectlanguage{greek} τον \texttt{\selectlanguage{english}labels\selectlanguage{greek}} στη νέα στήλη και την αντικαθιστούμε μέσα στα \texttt{\selectlanguage{english}data\selectlanguage{greek}} μας.
+\selectlanguage{english}
+\begin{lstlisting}
+# if the labels column is has any string then we encode this columns in numbers
+    has_string = labels.dtype == 'object'
+    if has_string:
+        
+        labels_encoded = labels.astype('category').cat.codes
+        
+        # we give to the encoded labels column name the labels column name
+        labels_encoded.name = labels.name
+        
+        # we connect the encoded labels to the features dataset
+        data = pd.concat([features,labels_encoded], axis=1)
+\end{lstlisting}
+\selectlanguage{greek}
+
+Στη συνέχεια δημιουργούνται δύο διαφορετικά \selectlanguage{english}tabs\selectlanguage{greek} με την παρακάτω εντολή που καθορίζουν τον τρόπο οπτικοποίησης των δεδομένων.
+
+\selectlanguage{english}
+\begin{lstlisting}
+DRA,EDA = st.tabs(["Dimensionality Reduction Algorithms","Exploratory Data Analysis"])
+\end{lstlisting}
+\selectlanguage{greek}
+
+
+
+\newpage
+
+
+\selectlanguage{english}\subsubsection{DRA tab (Dimensionality Reduction Algorithms)}\selectlanguage{greek}
+Στο \texttt{\selectlanguage{english}DRA\selectlanguage{greek}} δημιουργούμε 2 ακόμη \selectlanguage{english}tabs\selectlanguage{greek}, όπως φαίνεται παρακάτω, που αναφέρονται στους αλγορίθμους μείωσης διαστάσεων \texttt{\selectlanguage{english}PCA\selectlanguage{greek}} και \texttt{\selectlanguage{english}T-SNE\selectlanguage{greek}}.
+\selectlanguage{english}
+\begin{lstlisting}
+with DRA:
+        st.header("Select Dimensionality Reduction Algorithm (PCA, T-SNE)")
+        PCA,TSNE = st.tabs(["PCA","t-SNE"])
+        with PCA:
+            visualize_pca(data,labels)
+        with TSNE:
+            visualize_tsne(data,labels)
+\end{lstlisting}
+\selectlanguage{greek}
+\selectlanguage{english}\textbf{\paragraph{PCA algorithm tab and t-SNE algorithm tab}}\selectlanguage{greek}\\
+Στα \texttt{\selectlanguage{english}PCA\selectlanguage{greek}} και \texttt{\selectlanguage{english}tsne tab\selectlanguage{greek}} κάνουμε ακριβώς την ίδια υλοποίηση αλλάζοντας δηλαδή:
+Αρχικά εκτελούμε τον καθορισμένο αλγόριθμο κάνοντας \texttt{\selectlanguage{english}fit\selectlanguage{greek}} τα δεδομένα σε αυτόν και έπειτα παίρνουμε όλα τα \texttt{\selectlanguage{english}unique label names\selectlanguage{greek}}, τα οποία είναι είτε αριθμοί είτε \texttt{\selectlanguage{english}strings\selectlanguage{greek}} όπου τα έχουμε δώσει ως παράμετρο, και τα βάζουμε σε μία μεταβλητή. \texttt{\selectlanguage{english}unique\_labels\_names\selectlanguage{greek}}.
+\selectlanguage{english}
+\begin{lstlisting}
+# Perform PCA and fits dataset
+pca = PCA(n_components=2)
+pca_result = pca.fit_transform(data) 
+# get unique labels names
+unique_labels_names = np.unique(labels_names)
+\end{lstlisting}
+\selectlanguage{greek}
+
+
+
+
+
+\newpage
+
+
+Στη συνέχεια, φτιάχνουμε το μέγεθος του \texttt{\selectlanguage{english}plot figure\selectlanguage{greek}} και δοκιμάζουμε για το αν έχει \texttt{\selectlanguage{english}labels\selectlanguage{greek}} τα δεδομένα που έδωσε ο χρήστης ή όχι:
+\begin{itemize}
+\item αν έχει \texttt{\selectlanguage{english}labels\selectlanguage{greek}} τότε εμφανίζει το κάθε \texttt{\selectlanguage{english}datapoint\selectlanguage{greek}} με διαφορετικό χρώμα δείχνοντας έτσι σε ποιο \texttt{\selectlanguage{english}label\selectlanguage{greek}} αναφέρεται.
+\item αν δεν έχει \texttt{\selectlanguage{english}labels\selectlanguage{greek}} τότε εμφανίζει όλα τα \texttt{\selectlanguage{english}datapoints\selectlanguage{greek}} με το ίδιο χρώμα.
+\end{itemize}
+\mbox{Παράδειγμα Αλγόριθμος \selectlanguage{english} \texttt{PCA:}}
+\selectlanguage{english}
+\begin{lstlisting}
+# create plt fig
+plt.figure(figsize=(8, 6))   
+# Plot PCA results
+try:
+    # if there are labels it plots the data with different colors
+    
+    # each label point gets a different color
+    for label in unique_labels_names:
+        plt.scatter(pca_result[labels_names == label, 0], pca_result[labels_names == label, 1], 
+                    label=label, cmap='viridis')
+        
+    # Display labels in right corner
+    plt.legend(title='Labels', loc='center left', bbox_to_anchor=(1, 0.5))
+except:
+    # if there are no labels it plots the data with the same color
+    plt.scatter(pca_result[:,0], pca_result[:,1],color='blue')
+\end{lstlisting}
+\selectlanguage{greek}
+Τέλος, εμφανίζει το κατάλληλο γράφημα μέσω της \texttt{\selectlanguage{english}matplotlib.pyplot\selectlanguage{greek}} και αναφέρει μία επεξήγηση για το πού χρησιμοποιείται ο κάθε αλγόριθμος καλύτερα και το τι κάνει.
+
+
+\newpage
+\subsubsection{ \selectlanguage{english}EDA tab (Exploratory Data Analysis)\selectlanguage{greek}}
+Στο \selectlanguage{english}EDA\selectlanguage{greek} δημιουργούμε 3 διαφορετικά \selectlanguage{english}plots\selectlanguage{greek}, όπως φαίνεται παρακάτω, που αναφέρονται σε τρία γραφήματα οπτικοποίησης δεδομένων, δηλαδή σε ιστόγραμμα, σε διάγραμμα πυκνότητας (\selectlanguage{english}density plot\selectlanguage{greek}) και σε \selectlanguage{english}boxplot\selectlanguage{greek}:
+
+\selectlanguage{english}
+\begin{lstlisting}
+with EDA:
+    st.header('Exploratory Data Analysis')
+    histogramplot, Densityplot, Boxplot = st.tabs(["Histogram", "Density", "Boxplot"])
+    # connects the dataset into a single column named 
+    melted_data = data.melt(var_name=dataset_name)
+    # Display exploratory data analysis
+    with histogramplot:
+        Histogram_plot(melted_data, dataset_name)
+    
+    with Densityplot:
+        Density_plot(melted_data, dataset_name)
+    
+    with Boxplot:
+        Box_plot(melted_data, dataset_name)
+\end{lstlisting}
+\selectlanguage{greek}
+
+
+
+\newpage
+
+
+
+\textbf{\paragraph{\selectlanguage{english}Histogram, Density, and Box plot tabs\selectlanguage{greek}}}\\
+Το κάθε διάγραμμα έχει δημιουργηθεί με τον ίδιο τρόπο, δηλαδή παίρνει ουσιαστικά δεδομένα τα οποία τα \selectlanguage{english}columns\selectlanguage{greek} τους έχουν ενωθεί σε ένα κοινό \selectlanguage{english}column\selectlanguage{greek}, ή αλλιώς έχουν γίνει \selectlanguage{english}melted\selectlanguage{greek}, που έχει ως \selectlanguage{english}column name\selectlanguage{greek} το όνομα του \selectlanguage{english}dataset\selectlanguage{greek}.
+Έπειτα όπως φαίνεται στο παρακάτω παράδειγμα (\selectlanguage{english}histogram\selectlanguage{greek}):
+
+\selectlanguage{english}
+\begin{lstlisting}
+def Histogram_plot(data, dataset_name):
+    # if Histogram Plot tab is select it plots a histogram
+    st.write("## Histogram Graph")
+    st.write("### Plot:")
+    plt.figure(figsize=(10, 6))
+    sns.histplot(data, x='value', hue=dataset_name, kde=True, multiple='stack')
+    plt.title('Histogram of all columns')
+    plt.xlabel('Value')
+    plt.ylabel('Frequency')
+    plt.legend(title=dataset_name)
+    st.pyplot()
+    st.write("""
+            ## When to use a histogram
+                ...
+             """)
+\end{lstlisting}
+\selectlanguage{greek}
+θέτει ως εικόνα μέγεθος (10,6), κάνει \selectlanguage{english}plot\selectlanguage{greek} το Ιστόγραμμα παίρνοντας τα \selectlanguage{english}melted\selectlanguage{greek} δεδομένα και χρησιμοποιώντας το \selectlanguage{english}dataset\_name\selectlanguage{greek} ως τίτλο. Τέλος, έχουμε προσθέσει και μία σύντομη περιγραφή του κάθε διαγράμματος από κάτω από το αντίστοιχο γράφημα.
+
+
+\newpage
+
+
+\subsection{\selectlanguage{english}Machine\_Learning\_tab.py\selectlanguage{greek}}  
+Για το \selectlanguage{english}machine learning tab\selectlanguage{greek} έχουμε δημιουργήσει 2 διαφορετικά \selectlanguage{english}tabs\selectlanguage{greek}, \selectlanguage{english}Classifiers\selectlanguage{greek} και \selectlanguage{english}Clusters\selectlanguage{greek} όπου δίνουμε στο κάθε τα δεδομένα του χρήστη:
+
+\selectlanguage{english}
+\begin{lstlisting}
+def Machine_Learning_tab(data):
+    # Tab title
+    st.title("Machine Learning Algorithms")
+    # tab to select classifiers or clusters 
+    Classifiers, Clusters = st.tabs(
+    ['Classifiers', 'Clusters']
+    )
+    
+    with Classifiers:
+        classifiers(data)
+    with Clusters:
+        clusters(data)
+\end{lstlisting}
+\selectlanguage{greek}
+
+\subsubsection{\selectlanguage{english}Classifiers\selectlanguage{greek}}
+Στο κομμάτι των \selectlanguage{english}classifiers\selectlanguage{greek} έχουμε προσθέσει δύο \selectlanguage{english}inputs\selectlanguage{greek}, τα οποία είναι οι παράμετροι που δίνονται στους δύο αλγορίθμους κατηγοριοποίησης, \selectlanguage{english}SVM\selectlanguage{greek} και \selectlanguage{english}KNN\selectlanguage{greek} για να πραγματοποιηθεί η ανάλυσή τους με το που ο χρήστης πατήσει το κουμπί \selectlanguage{english}start analysis\selectlanguage{greek}:
+
+\selectlanguage{english}
+\begin{lstlisting}
+# algorithm type
+st.write("# Classifiers")
+# classifiers inputs
+st.write("### Support Vector Machines")
+c = st.number_input("Enter the regularization parameter for the Support Vector Machines:", min_value=0.01, value=0.01)
+st.write("### K-Nearest Neighbors")
+k_neighbors = st.number_input("Enter the k neighbors for the K-Nearest Neighbors:", min_value=1, value=3)
+\end{lstlisting}
+\selectlanguage{greek}
+
+
+\newpage
+
+
+\textbf{\paragraph{\selectlanguage{english}Start analysis\selectlanguage{greek}}}\\
+Αφότου το πατήσει το συγκεκριμένο κουμπί ο χρήστης τότε διαχωρίζονται τα δεδομένα σε \selectlanguage{english}features\selectlanguage{greek} και \selectlanguage{english}labels\selectlanguage{greek}, και χρησιμοποιούνται οι παράμετροι του χρήστη στις συναρτήσεις που υπολογίζουν την ακρίβεια των αλγορίθμων \selectlanguage{english}svm\selectlanguage{greek} και \selectlanguage{english}knn\selectlanguage{greek}. Μόλις ολοκληρωθεί αυτός ο υπολογισμός τότε μπαίνουν αυτά τα αποτελέσματα σε ένα \selectlanguage{english}dataframe\selectlanguage{greek}, τα οποία είναι ουσιαστικά η σύγκριση της ακρίβειας του κάθε αλγορίθμου και από κάτω ακριβώς προτείνει το πρόγραμμα ποιος αλγόριθμος από τους δύο είναι ο ιδανικός για τις παραμέτρους και τα δεδομένα που έχει δώσει. Τέλος, κάτω από τα αποτελέσματα εμφανίζεται επίσης και μία σύντομη περιγραφή του κάθε αλγορίθμου και μια εξήγηση για το σε ποια περίπτωση είναι πιο ιδανικός, π.χ. ο \selectlanguage{english}knn\selectlanguage{greek} από τον \selectlanguage{english}svm\selectlanguage{greek} και αντίστροφα.
+
+\selectlanguage{english}
+\begin{lstlisting}
+if st.button("Start Analysis", key="classifiers"):
+    features = data.iloc[:, :-1]
+    labels = data.iloc[:, -1]
+    svm_accuracy = run_support_vector_machines(features, labels, c)
+    knn_accuracy = run_KNN(features, labels, k_neighbors)
+    svm_accuracy_per = svm_accuracy * 100
+    knn_accuracy_per = knn_accuracy * 100
+    Eval_results = {
+        "Classication Algorithm": ["Support Vector Machines", "K-Nearest Neighbors"],
+        "Parameter": [f'{c}' + " (regularization parameter)", f'{k_neighbors}' + " (k-neighbors)"],
+        "Score": [f'{svm_accuracy:.4f}', f'{knn_accuracy:.4f}'],
+        "%": [f'{svm_accuracy_per:.2f}%', f'{knn_accuracy_per:.2f}%']
+    }
+    st.write("Evaluation Results (Accuracy Score):")
+    st.write(pd.DataFrame(Eval_results))
+    best_accuracy, algorthm_name = best_acc_algorithm(Eval_results, 'Classication Algorithm')
+    st.write("Recommended Algorithm: `" + algorthm_name + "`")
+    st.write("Best Accuracy: `" + str(best_accuracy) + "`.")
+    st.write("""SVM vs KNN
+                    ...   """)
+\end{lstlisting}
+\selectlanguage{greek}
+
+
+\newpage
+
+
+\textbf{\paragraph{\selectlanguage{english}Support Vector Machines (svm)\selectlanguage{greek} και\selectlanguage{english} K-Nearest Neighbors (KNN)\selectlanguage{greek}}}\\
+Στις συναρτήσεις \selectlanguage{english}run\_support\_vector\_machines(features, labels, c)\selectlanguage{greek} και \\ \selectlanguage{english}run\_KNN(features, labels, k\_neighbors)\selectlanguage{greek} δεχόμαστε ως παραμέτρους, τα \selectlanguage{english}features\selectlanguage{greek} και τα \selectlanguage{english}labels\selectlanguage{greek} του \selectlanguage{english}dataset\selectlanguage{greek} καθώς και τις παραμέτρους \selectlanguage{english}c\selectlanguage{greek} και \selectlanguage{english}k\selectlanguage{greek} που έδωσε ο χρήστης αντίστοιχα. Αρχικά, χωρίζουμε τυχαία τα δεδομένα σε \selectlanguage{english}train 70\% \selectlanguage{greek} και \selectlanguage{english}test 30\%\selectlanguage{greek}. Έπειτα δημιουργούμε το μοντέλο \selectlanguage{english}svm\selectlanguage{greek} και \selectlanguage{english}knn\selectlanguage{greek} με την συνάρτηση \selectlanguage{english}SVC(C=c)\selectlanguage{greek} και \selectlanguage{english}KNeighborsClassifier(n\_neighbors=k)\selectlanguage{greek}, δίνοντας τις παράμετρους του χρήστη αντίστοιχα και κάνουμε \selectlanguage{english}fit\selectlanguage{greek} τα \selectlanguage{english}train\selectlanguage{greek} δεδομένα σε κάθε αλγόριθμο ξεχωριστά. Τέλος, κάνουμε μία πρόβλεψη με τα \selectlanguage{english}test features data\selectlanguage{greek} και με αυτήν υπολογίζουμε και επιστρέφουμε το ποσοστό ακρίβειας του κάθε αλγορίθμου συγκρίνοντας, με την συνάρτηση \selectlanguage{english}accuracy\_score(y\_test, y\_pred)\selectlanguage{greek}, την πρόβλεψη με τα \selectlanguage{english}test labels\selectlanguage{greek}.
+
+\selectlanguage{english}
+\begin{lstlisting}
+def run_support_vector_machines(X, y, c):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+    
+    # train the svm model and return accuracy
+    svm = SVC(C=c)
+    svm.fit(X_train, y_train)       
+    y_pred = svm.predict(X_test)    
+    accuracy = accuracy_score(y_test, y_pred)
+    return accuracy
+
+def run_KNN(X, y, k_neighbors):
+    # Split the data into training and testing sets (70% training, 30% testing)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+    
+    # train the K-NN model and return accuracy
+    knn = KNeighborsClassifier(n_neighbors=k_neighbors)
+    knn.fit(X_train, y_train)
+    y_pred = knn.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    return accuracy
+\end{lstlisting}
+\selectlanguage{greek}
+
+
+\newpage
+
+
+\subsubsection{\selectlanguage{english}Clusters\selectlanguage{greek}}
+Στο κομμάτι των \selectlanguage{english}clusters\selectlanguage{greek} έχουμε πάλι προσθέσει δύο διαφορετικά \selectlanguage{english}inputs\selectlanguage{greek}, τα οποία είναι οι παράμετροι που δίνονται στους δύο αλγορίθμους ομαδοποίησης, \selectlanguage{english}Agglomerative Hierarchical Clustering\selectlanguage{greek} και \selectlanguage{english}Affinity Propagation\selectlanguage{greek} για να πραγματοποιηθεί η ανάλυσή τους με το που ο χρήστης πατήσει το κουμπί \selectlanguage{english}start analysis\selectlanguage{greek}:
+
+\selectlanguage{english}
+\begin{lstlisting}
+    # algorithm type
+    st.write("# Clusters")
+    # Clusters inputs
+    st.write("### Agglomerative Hierachical Clustering")
+    n_clusters_agg_clust = st.number_input("Enter the number of clusters for Agglomerative Hierachical Clustering:", min_value=2, value=2)
+    st.write("### Affinity Propagation")
+    similarity_between_data_points = st.number_input("Enter the bandwidth parameter for Affinity Propagation Clustering:", min_value=0.5,max_value=0.91, value=0.7)
+\end{lstlisting}
+\selectlanguage{greek}
+\newpage
+\textbf{\paragraph{\selectlanguage{english}Start analysis\selectlanguage{greek}}}\\
+Αφότου το πατήσει το συγκεκριμένο κουμπί ο χρήστης τότε δοκιμάζει να τρέξει το πρόγραμμα και στην περίπτωση που ο χρήστης δώσει δεδομένα με \selectlanguage{english}labels\selectlanguage{greek} τότε θα εμφανίσει κατάλληλο \selectlanguage{english}error message\selectlanguage{greek}. Αν δουλέψει κανονικά τότε χρησιμοποιούνται οι παράμετροι του χρήστη στις συναρτήσεις που υπολογίζουν την ακρίβεια των αλγορίθμων \selectlanguage{english}AHC\selectlanguage{greek} και \selectlanguage{english}AG\selectlanguage{greek}. Μόλις ολοκληρωθεί αυτός ο υπολογισμός τότε μπαίνουν αυτά τα αποτελέσματα σε ένα \selectlanguage{english}dataframe\selectlanguage{greek}, τα οποία είναι ουσιαστικά η σύγκριση της ακρίβειας του κάθε αλγορίθμου και από κάτω ακριβώς προτείνει το πρόγραμμα ποιος αλγόριθμος από τους δύο είναι ο ιδανικός για τις παραμέτρους και τα δεδομένα που έχει δώσει. Τέλος, κάτω από τα αποτελέσματα εμφανίζεται επίσης και μία σύντομη περιγραφή του κάθε αλγορίθμου και μια εξήγηση για το σε ποια περίπτωση είναι πιο ιδανικός, π.χ. ο \selectlanguage{english}AHC\selectlanguage{greek} από τον \selectlanguage{english}AG\selectlanguage{greek} και αντίστροφα.
+\selectlanguage{english}
+\begin{lstlisting}
+if st.button("Start Analysis",key="clusters"):
+    try:
+         st.write("""
+                 ```
+                    WARNING:
+                    the results may not be correct if your dataset already has labels (ex. 0 or 1)
+                 ```                   
+                 """)
+        agg_clust_labels,agg_clust_score= run_agglomerative_clustering(data,n_clusters_agg_clust)
+        aff_prop_labels,aff_prop_score = run_affinity_propagation(data, similarity_between_data_points)
+    ... print analysis results ...
+    except ValueError as e:
+            # if it has strings in the labels, it shows a specific error message
+            if str(e).startswith("could not convert string to float:"):
+                st.error("An error occurred: your dataframe already has labels (strings)")
+            else:
+                raise e
+\end{lstlisting}
+\selectlanguage{greek}
+
+
+\newpage
+\textbf{\paragraph{\selectlanguage{english}Agglomerative Hierachical Clustering (AHC)\selectlanguage{greek} και \selectlanguage{english}Affinity Propagation (AP)\selectlanguage{greek}}}\\
+Στις συναρτήσεις \selectlanguage{english}run\_agglomerative\_clustering(data,n\_clusters\_agg\_clust)\selectlanguage{greek} και \selectlanguage{english}run\_affinity\_propagation(data, similarity\_between\_data\_points)\selectlanguage{greek} δεχόμαστε ως παραμέτρους, τα \selectlanguage{english}features\selectlanguage{greek} του \selectlanguage{english}dataset\selectlanguage{greek} καθώς και τις παραμέτρους \selectlanguage{english}n\_clusters\selectlanguage{greek} και \selectlanguage{english}similarity\_between\_data\_points\selectlanguage{greek} που έδωσε ο χρήστης αντίστοιχα. Αρχικά, δημιουργούμε το μοντέλο \selectlanguage{english}AHC\selectlanguage{greek} και \selectlanguage{english}AG\selectlanguage{greek} με την συνάρτηση \selectlanguage{english}AgglomerativeClustering(n\_clusters=n\_clusters)\selectlanguage{greek} και \selectlanguage{english}AffinityPropagation(damping=similarity\\\_between\_data\_points)\selectlanguage{greek}, δίνοντας τις παράμετρους του χρήστη αντίστοιχα και κάνουμε \selectlanguage{english}fit\selectlanguage{greek} τα \selectlanguage{english}features\selectlanguage{greek} δεδομένα σε κάθε αλγόριθμο ξεχωριστά ώστε να βρούμε τα \selectlanguage{english}labels\selectlanguage{greek}. Τέλος, επιστρέφουμε τα \selectlanguage{english}labels\selectlanguage{greek} καθώς και το \selectlanguage{english}silhouette\_score(data, labels)\selectlanguage{greek} του κάθε αλγόριθμου.
+
+\selectlanguage{english}
+\begin{lstlisting}
+def run_agglomerative_clustering(data, n_clusters):
+    # train the agglomerative clustering model and return the predicted labels plus the silhouette_score
+    agglomerative = AgglomerativeClustering(n_clusters=n_clusters)
+    labels = agglomerative.fit_predict(data)
+    score = silhouette_score(data, labels)
+    return labels, score
+
+def run_affinity_propagation(data,similarity_between_data_points):
+    # train the affinity propagation model and return the predicted labels plus the silhouette_score
+    affinity_propagation = AffinityPropagation(damping=similarity_between_data_points)
+    affinity_propagation.fit(data)
+    labels = affinity_propagation.labels_
+    score = silhouette_score(data,labels)
+    return labels,score
+\end{lstlisting}
+\selectlanguage{greek}
+
+\newpage
+
+\subsection{\selectlanguage{english}Info\_tab.py\selectlanguage{greek}}
+Για την υλοποίηση του \selectlanguage{english}info\_tab\selectlanguage{greek} κάναμε την εντολή:
+\selectlanguage{english}
+\begin{lstlisting}
+def Info_tab():
+  st.write("""
+          # Info Tab
+            ....
+          """
+\end{lstlisting}
+\selectlanguage{greek}
+όπου μέσα στις τρεις τελείες έχουμε προσθέσει κείμενο το οποίο έχει μια σύντομη περιγραφή του κάθε παραπάνω \selectlanguage{english}tab\selectlanguage{greek} καθώς και οδηγείες για το πως να την χρησιμοποιήσει ο χρήστης. Τέλος, περιέχει και μια σύντομη αναφορά των μελών ομάδας μας, το τι \selectlanguage{english}task\selectlanguage{greek} ανατέθηκε στο κάθε μέλος κατά την ανάπτυξή της εφαρμογής και τέλος \selectlanguage{english}links\selectlanguage{greek} για το \selectlanguage{english}github profile\selectlanguage{greek} του καθενός.
+
+
+\newpage
+
+\section{Πως να τρέξεις την εφαρμογή}
+Υπάρχουν δύο τρόποι για να τρέξει κάποιος την συγκεκριμένη εφαρμογή ο ένας είναι μέσω \selectlanguage{english}docker desktop\selectlanguage{greek} και ο άλλος είναι μέσω \selectlanguage{english}python venv (virtual environment)\selectlanguage{greek}, όπου και οι δύο τρόποι περιγράφονται παρακάτω.
+\subsection{Μέσω \selectlanguage{english} docker desktop\selectlanguage{greek}}
+\subsubsection{Eπεξήγηση\selectlanguage{english} Dockerfile\selectlanguage{greek}}
+\selectlanguage{english}
+\begin{lstlisting}
+FROM python:3.10.11-slim-bullseye
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+EXPOSE 8501
+COPY . .
+CMD ["streamlit", "run", "app.py"]
+\end{lstlisting}
+\selectlanguage{greek}
+Στο \selectlanguage{english}dockerfile\selectlanguage{greek} αρχικά ορίζουμε την εικόνα \selectlanguage{english}docker\selectlanguage{greek} που θα χρησιμοποιήσουμε που σε αυτήν την περίπτωση είναι το \selectlanguage{english}slim - bullseye\selectlanguage{greek} με \selectlanguage{english}version\selectlanguage{greek} της \selectlanguage{english}python 3.10.11\selectlanguage{greek}. Έπειτα, φτιάχνει το \selectlanguage{english}directory /app\selectlanguage{greek} στο \selectlanguage{english}docker container\selectlanguage{greek} μας, βάζει το αρχείο \selectlanguage{english}requirements.txt\selectlanguage{greek} μέσα στο \selectlanguage{english}container\selectlanguage{greek} και κάνει \selectlanguage{english}install\selectlanguage{greek} από αυτό όλα τα απαραίτητα \selectlanguage{english}modules\selectlanguage{greek} της \selectlanguage{english}python\selectlanguage{greek} που θα χρειαστούμε. Στη συνέχεια, ελευθερώνει το \selectlanguage{english}port 8501\selectlanguage{greek}, το οποίο είναι το \selectlanguage{english}port\selectlanguage{greek} που χρησιμοποιεί το \selectlanguage{english}Streamlit\selectlanguage{greek} και κάνει όλα τα αρχεία από το τρέχον \selectlanguage{english}directory\selectlanguage{greek} στο \selectlanguage{english}/app container directory\selectlanguage{greek}. Τέλος, εκτελεί μέσα στο \selectlanguage{english}docker container\selectlanguage{greek} την εντολή \selectlanguage{english}streamlit run app.py\selectlanguage{greek} για να τρέξει η εφαρμογή μας. 
+
+\subsubsection{\selectlanguage{english}Build Docker\selectlanguage{greek}}
+Αρχικά, θα πρέπει να έχει βεβαιωθεί ο χρήστης ότι έχει εγκαταστήσει το \selectlanguage{english}docker desktop\selectlanguage{greek} στον υπολογιστή του και να έχει ανοιχτό το παράθυρο του. Στη συνέχεια, θα χρειαστεί να εκτελέσει στο \selectlanguage{english}terminal\selectlanguage{greek} την παρακάτω εντολή:
+\selectlanguage{english}
+\begin{lstlisting}
+docker build -t data_analysis_dev_app .
+\end{lstlisting}
+\selectlanguage{greek}
+για να κάνει \selectlanguage{english}build\selectlanguage{greek} το \selectlanguage{english}docker image container\selectlanguage{greek} και έπειτα το τρέχει γράφοντας:
+\selectlanguage{english}
+\begin{lstlisting}
+docker run -p 8501:8501 data_analysis_dev_app
+\end{lstlisting}
+\selectlanguage{greek}
+και για να ανοίξει την εφαρμογή ο χρήστης στον \selectlanguage{english}browser\selectlanguage{greek} του γράφει τον παρακάτω σύνδεσμο:
+\selectlanguage{english}
+\begin{lstlisting}
+127.0.0.1:8501
+\end{lstlisting}
+\selectlanguage{greek}
+
+\newpage
+
+\subsection{Mέσω\selectlanguage{english} python venv (virtual environment)\selectlanguage{greek}}
+Ένας ακόμη τρόπος να τρέξει η εφαρμογή είναι μέσω \selectlanguage{english}virtual environment\selectlanguage{greek} της \selectlanguage{english}python\selectlanguage{greek} όπου θα πρέπει πρώτα ο χρήστης να έχει βεβαιωθεί ότι έχει κατεβασμένη την \selectlanguage{english}python3+\selectlanguage{greek} στο σύστημα του.
+Αφού την έχει κατεβασμένη τότε εκτελεί την παρακάτω εντολή στο \selectlanguage{english}terminal\selectlanguage{greek} για να δημιουργήσει νέο \selectlanguage{english}venv\selectlanguage{greek}:
+\selectlanguage{english}
+\begin{lstlisting}
+python -m venv venv
+\end{lstlisting}
+\selectlanguage{greek}
+Έπειτα θα χρειαστεί να το κάνει \selectlanguage{english}activate\selectlanguage{greek} γράφοντας:\\
+Για \selectlanguage{english}Windows\selectlanguage{greek}:
+\selectlanguage{english}
+\begin{lstlisting}
+.\venv\Scripts\activate
+\end{lstlisting}
+\selectlanguage{greek}
+Για \selectlanguage{english}Linux\selectlanguage{greek}:
+\selectlanguage{english}
+\begin{lstlisting}
+source ./venv/bin/activate
+\end{lstlisting}
+\selectlanguage{greek}
+Μόλις το κάνει \selectlanguage{english}activate\selectlanguage{greek}, τότε θα πρέπει να κατεβάσει σε αυτό τις απαιτούμενες βιβλιοθήκες της εφαρμογής που βρίσκονται στο \selectlanguage{english}requirements.txt\selectlanguage{greek}:
+\selectlanguage{english}
+\begin{lstlisting}
+pip install -r requirements.txt
+\end{lstlisting}
+\selectlanguage{greek}
+Τέλος, θα τρέξει το πρόγραμμα μέσω \selectlanguage{english}streamlit\selectlanguage{greek} γράφοντας:
+\selectlanguage{english}
+\begin{lstlisting}
+streamlit run app.py 
+\end{lstlisting}
+\selectlanguage{greek}
+όπου θα ανοίξει αυτόματα στον \selectlanguage{english}browser\selectlanguage{greek} και η εφαρμογή.
+
+\newpage
+
+\section{Παράδειγμα Χρήσης Εφαρμογής}
+\subsection{Επεξήγηση Αρχείου \selectlanguage{english}diabetes.csv\selectlanguage{greek}}
+Κάθε γραμμή του αρχείου αντιπροσωπεύει τα δεδομένα ενός ατόμου και περιλαμβάνει διάφορες ιατρικές μετρήσεις και το αποτέλεσμα της διάγνωσης για διαβήτη. 
+Οι στήλες του αρχείου είναι οι ακόλουθες:
+\begin{itemize}
+    \item \selectlanguage{english}Pregnancies\selectlanguage{greek}: Ο αριθμός των κυήσεων που έχει περάσει η γυναίκα.
+    \item \selectlanguage{english}Glucose\selectlanguage{greek}: Το επίπεδο γλυκόζης στο αίμα μετά από 2 ώρες σε τεστ ανοχής γλυκόζης.
+    \item \selectlanguage{english}BloodPressure\selectlanguage{greek}: Η διαστολική αρτηριακή πίεση \selectlanguage{english}(mm Hg){greek}.
+    \item \selectlanguage{english}SkinThickness\selectlanguage{greek}: Το πάχος του δέρματος στην περιοχή των τρικεφάλων \selectlanguage{english}(mm){greek}.
+    \item \selectlanguage{english}Insulin\selectlanguage{greek}: Το επίπεδο ινσουλίνης στον ορό (μικρογραμμάρια ανά χιλιοστόλιτρο).
+    \item \selectlanguage{english}BMI\selectlanguage{greek}: Δείκτης μάζας σώματος (βάρος σε κιλά δια του ύψους σε τετραγωνικά μέτρα).
+    \item \selectlanguage{english}DiabetesPedigreeFunction\selectlanguage{greek}: Μια βαθμολογία που συνοψίζει το ιστορικό διαβήτη στην οικογένεια και την γενετική προδιάθεση.
+    \item \selectlanguage{english}Age\selectlanguage{greek}: Η ηλικία της γυναίκας.
+    \item \selectlanguage{english}Outcome\selectlanguage{greek}: Το αποτέλεσμα της διάγνωσης (0 = δεν έχει διαβήτη, 1 = έχει διαβήτη)
+\end{itemize}
+
+
+\newpage
+
+Παρόμοια δεδομένα δίνονται από τον χρήστη για να εκπαιδεύσουν το μοντέλο μηχανικής μάθησης.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=0.7\textheight]{assets/diabetes_csv.png}
+  \caption{Περιεχόμενο Αρχείου  \selectlanguage{english}diabetes.csv\selectlanguage{greek}}
+  \label{fig:diabetes.csv}
+\end{figure}
+
+\newpage
+\subsubsection{Εισαγωγή αρχείου \selectlanguage{english}csv\selectlanguage{greek} στην εφαρμογή:}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth,height=0.3\textheight]{assets/upload_csv.png}
+  \caption{Ανέβασμα Αρχείου  \selectlanguage{english}csv\selectlanguage{greek}}
+  \label{fig:upload_csv}
+\end{figure}
+
+\newpage
+\subsection{\selectlanguage{english}Dataframe tab\selectlanguage{greek}}
+Το \selectlanguage{english}DataFrame\selectlanguage{greek} είναι μια κεντρική δομή δεδομένων στη βιβλιοθήκη \selectlanguage{english}pandas\selectlanguage{greek} της \selectlanguage{english}Python\selectlanguage{greek}, που χρησιμοποιείται ευρέως για την ανάλυση και τη διαχείριση δεδομένων. Μοιάζει με φύλλο εργασίας στο \selectlanguage{english}Excel\selectlanguage{greek}, με σειρές και στήλες. Κάθε στήλη μπορεί να περιέχει δεδομένα διαφορετικού τύπου.
+
+\newpage
+\subsubsection{Το \selectlanguage{english}Dataframe tab\selectlanguage{greek} παρέχει δύο επιλογές:}
+\begin{itemize}
+    \item α) Χρήση των \selectlanguage{english}labels\selectlanguage{greek}\\
+    Τα \selectlanguage{english}labeled datasets\selectlanguage{greek} περιλαμβάνουν δεδομένα όπου κάθε δείγμα έχει μια συσχετισμένη ετικέτα ή στόχο που θέλουμε να προβλέψουμε. Αυτά τα δεδομένα είναι κρίσιμα για την εκπαίδευση μοντέλων εποπτευόμενης μάθησης.
+\end{itemize}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth,height=0.2\textheight]{assets/Samples_X_Features.png}
+  \caption{\selectlanguage{english}Samples X Features \selectlanguage{greek}}
+  \label{fig:samples_X_features}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth,height=0.25\textheight]{assets/Labels.png}
+  \caption{\selectlanguage{english}Labels \selectlanguage{greek}}
+  \label{fig:labels}
+\end{figure}
+
+\begin{itemize}
+
+    \item β) Χωρίς \selectlanguage{english}labels\selectlanguage{greek}\\
+    Ωστόσο, επειδή σε αυτήν την περίπτωση έχουμε \selectlanguage{english}labels\selectlanguage{greek} στα δεδομένα μας, δεν χρειάζεται να επιλέξουμε αυτό το \selectlanguage{english}tab\selectlanguage{greek}.
+\end{itemize}
+
+\newpage
+
+\subsection{\selectlanguage{english}2D Visualization Tab\selectlanguage{greek}}
+\selectlanguage{english}\subsubsection{DRA plot results (pca, tsne)}\selectlanguage{greek}
+\textbf{\paragraph{\selectlanguage{english}PCA plot results\selectlanguage{greek}}}\\
+Αποτελέσματα:
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth,height=0.4\textheight]{assets/PCA.png}
+  \caption{\selectlanguage{english}pca plot \selectlanguage{greek}}
+  \label{fig:pca}
+\end{figure}
+
+Συμπεράσματα:
+\begin{itemize}
+    \item Συσσώρευση Δεδομένων στα Αριστερά: Υπάρχει μεγάλη συγκέντρωση label (0,1) στα αριστερά του διαγράμματος. Αυτό μπορεί να σημαίνει ότι τα περισσότερα χαρακτηριστικά των δεδομένων συγκεντρώνονται γύρω από συγκεκριμένες τιμές. Τιμές που κυμαίνονται από [75,-75].
+    \item Εξάπλωση των Δεδομένων: Καθώς κινούμαστε προς τα δεξιά, τα δεδομένα αρχίζουν να διασπείρονται περισσότερο. Αυτή η εξάπλωση δείχνει ότι υπάρχουν λίγα δείγματα που αποκλίνουν αρκετά από τον κύριο όγκο των δεδομένων.
+    \item Ακραίες Τιμές: Υπάρχουν κάποια σημεία που βρίσκονται πολύ μακριά από την κύρια μάζα των δεδομένων, κάτι που μπορεί να υποδηλώνει την ύπαρξη πολύ διαφορετικών δειγμάτων.
+\end{itemize}
+
+\newpage
+\textbf{\paragraph{\selectlanguage{english}T-SNE plot results\selectlanguage{greek}}} \\
+Αποτελέσματα:
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth,height=0.4\textheight]{assets/tsne.png}
+  \caption{\selectlanguage{english}t-sne plot \selectlanguage{greek}}
+  \label{fig:tsne}
+\end{figure}
+
+Συμπεράσματα:
+\begin{itemize}
+    \item Υπάρχουν διαχωρισμένες ομάδες τιμών δεδομένων που είναι ανάμειξη των \selectlanguage{english}labels\selectlanguage{greek} (0 ή 1) που έχει δώσει ο χρήστης. Αυτό υποδηλώνει ότι τα δεδομένα έχουν φυσικές ομάδες ή κατηγορίες σε διαφορετικά πεδία τιμών που είναι ίδιες μεταξύ τους.
+    \item Διάκριση Μεταξύ Ομάδων: Διαχώρηση σε ομάδες, δείχνοντας ότι τα δεδομένα εντός κάθε ομάδας έχουν παρόμοια χαρακτηριστικά, ενώ οι διαφορετικές ομάδες έχουν αρκετά διακριτά χαρακτηριστικά.
+    \item Διάταξη των Ομάδων: Μπορούμε να παρατηρήσουμε τρεις κύριες ομάδες στο διάγραμμα. Η μία ομάδα βρίσκεται στο πάνω μέρος, μια δεύτερη ομάδα είναι προς τα αριστερά και κάτω, και η τρίτη ομάδα είναι εκτεταμένη προς τα δεξιά.
+    \item Απομόνωση Σημείων: Υπάρχουν μερικά σημεία που είναι απομονωμένα από τις κύριες ομάδες. Αυτά μπορεί να είναι εκτοπίσματα (\selectlanguage{english}outliers\selectlanguage{greek}) ή δεδομένα που δεν ανήκουν καθαρά σε καμία από τις κύριες ομάδες.
+\end{itemize}
+
+\newpage
+\selectlanguage{english}\subsubsection{EDA plot results (histogram, density, boxplot)}\selectlanguage{greek}
+\textbf{\paragraph{\selectlanguage{english}Histogram plot results\selectlanguage{greek}}}\\
+Αποτελέσματα:
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth,height=0.4\textheight]{assets/histogram.png}
+  \caption{\selectlanguage{english}Histogram plot \selectlanguage{greek}}
+  \label{fig:histogram}
+\end{figure}
+Συμπεράσματα:
+\begin{itemize}
+    \item Συγκέντρωση Τιμών Κοντά στο Μηδέν: Η πλειονότητα των τιμών φαίνεται να συγκεντρώνεται κοντά στο μηδέν. Αυτό σημαίνει ότι πολλές από τις τιμές στο σύνολο δεδομένων είναι χαμηλές.
+    \item Μικρός Αριθμός Μεγάλων Τιμών: Υπάρχουν λίγες τιμές που είναι σημαντικά μεγαλύτερες από τις υπόλοιπες.
+    \item Ετερογένεια των Δεδομένων: Το ιστόγραμμα υποδεικνύει ότι τα δεδομένα περιέχουν μια μεγάλη ποικιλία τιμών, αλλά οι περισσότερες είναι συγκεντρωμένες σε μικρό εύρος τιμών.
+\end{itemize}
+
+\newpage
+\textbf{\paragraph{\selectlanguage{english}Density plot results\selectlanguage{greek}}}\\
+Αποτελέσματα:
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth,height=0.4\textheight]{assets/density_plot.png}
+  \caption{\selectlanguage{english}Density plot \selectlanguage{greek}}
+  \label{fig:density_plot}
+\end{figure}
+Συμπεράσματα:
+\begin{itemize}
+    \item Συγκέντρωση Κοντά στο Μηδέν: Όπως και στο ιστόγραμμα, η πλειονότητα των τιμών είναι συγκεντρωμένη κοντά στο μηδέν. Η πυκνότητα των τιμών είναι πολύ υψηλή κοντά στο μηδέν και μειώνεται ραγδαία καθώς οι τιμές αυξάνονται.
+    \item Σπάνιες Μεγάλες Τιμές: Υπάρχουν λίγες τιμές που είναι σημαντικά μεγαλύτερες από τις υπόλοιπες, όπως φαίνεται από τις πολύ μικρές πυκνότητες που εκτείνονται προς τα δεξιά.
+    \item Αυξημένη Ακρίβεια των Τιμών: Το πυκνογράφημα παρέχει μια ομαλότερη εκδοχή της κατανομής των τιμών σε σύγκριση με το ιστόγραμμα, επιτρέποντας καλύτερη κατανόηση της κατανομής των δεδομένων.
+\end{itemize}
+
+\newpage
+
+\textbf{\paragraph{\selectlanguage{english}Boxplot results\selectlanguage{greek}}}\\
+Αποτελέσματα:
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth,height=0.4\textheight]{assets/boxplot.png}
+  \caption{\selectlanguage{english}boxplot\selectlanguage{greek}}
+  \label{fig:boxplot}
+\end{figure}
+
+Συμπεράσματα:
+\begin{itemize}
+    \item Μεταβλητότητα Τιμών: Οι μεταβλητές όπως οι \selectlanguage{english}Insulin\selectlanguage{greek} και \selectlanguage{english}Glucose\selectlanguage{greek} παρουσιάζουν μεγάλη μεταβλητότητα στις τιμές τους, ενώ οι \selectlanguage{english}DiabetesPedigreeFunction\selectlanguage{greek} και \selectlanguage{english}SkinThickness\selectlanguage{greek} έχουν μικρότερη μεταβλητότητα.
+    \item Διαφορές στις Κατανομές: Οι τιμές της \selectlanguage{english}Glucose\selectlanguage{greek} και της \selectlanguage{english}Insulin\selectlanguage{greek} έχουν μεγαλύτερο εύρος σε σύγκριση με άλλες μεταβλητές, ενώ οι τιμές των \selectlanguage{english}Pregnancies\selectlanguage{greek} και \selectlanguage{english}Age\selectlanguage{greek} έχουν πιο συγκεντρωμένη κατανομή με μικρότερη διασπορά.
+    \item Εκτός Ορίων Τιμές: Υπάρχουν πολλοί εκτός ορίων τιμές (\selectlanguage{english}outliers\selectlanguage{greek}) ειδικά στις μεταβλητές \selectlanguage{english}Insulin\selectlanguage{greek}, \selectlanguage{english}SkinThickness\selectlanguage{greek}, \selectlanguage{english}BloodPressure\selectlanguage{greek}, και \selectlanguage{english}BMI\selectlanguage{greek}. Αυτό μπορεί να είναι είτε λόγω ακραίων μετρήσεων είτε πιθανώς λανθασμένων δεδομένων.
+\end{itemize}
+
+\newpage
+\section{\selectlanguage{greek}Κύκλος Ζωής Έκδοσης Λογισμικού\selectlanguage{greek}}
+\subsection{\selectlanguage{greek}Εισαγωγή\selectlanguage{greek}}
+Η συγκεκριμένη εφαρμογή έχει αναπτυχθεί για την εξόρυξη και ανάλυση δεδομένων χρησιμοποιώντας την πλατφόρμα \selectlanguage{english}Streamlit\selectlanguage{greek} και υποστηρίζει λειτουργίες όπως φόρτωση δεδομένων, \selectlanguage{english}2D\selectlanguage{greek} οπτικοποιήσεις, μηχανική μάθηση και παρουσίαση του τρόπου λειτουργίας της. Οι κύριες δυνατότητες περιλαμβάνουν την εύκολη φόρτωση δεδομένων σε μορφή \selectlanguage{english}CSV\selectlanguage{greek} ή \selectlanguage{english}Excel\selectlanguage{greek}, την επισκόπηση και διαχείριση των δεδομένων, τη δημιουργία 2D οπτικοποιήσεων με χρήση αλγορίθμων μείωσης διάστασης όπως \selectlanguage{english}PCA\selectlanguage{greek} και \selectlanguage{english}t-SNE\selectlanguage{greek}, και την εκτέλεση αλγορίθμων μηχανικής μάθησης για κατηγοριοποίηση και ομαδοποίηση, επιτρέποντας τη σύγκριση της απόδοσης διαφορετικών αλγορίθμων. 
+
+
+\subsection{\selectlanguage{greek}Μοντέλο Κύκλου Ζωής Λογισμικού\selectlanguage{greek}}
+Για την επιτυχή κυκλοφορία της εφαρμογής σε ευρύ κοινό, θα ακολουθήσουμε ένα προσαρμοσμένο μοντέλο κύκλου ζωής λογισμικού, εμπνευσμένο από τις αρχές του \selectlanguage{english}Agile\selectlanguage{greek}. Η ανάπτυξη της εφαρμογής θα χωριστεί σε μικρές, διαχειρίσιμες εκδόσεις με διάρκεια 2-4 εβδομάδων, κατά τις οποίες θα προστίθενται νέες λειτουργίες ή θα βελτιώνονται υπάρχουσες, βασισμένες σε ανατροφοδότηση χρηστών. Οι χρήστες θα εμπλέκονται ενεργά στη διαδικασία ανάπτυξης μέσω δοκιμών \selectlanguage{english}beta\selectlanguage{greek} και ανατροφοδότησης, επιτρέποντας την ευελιξία στην προσαρμογή της ανάπτυξης με βάση τις αλλαγές στις απαιτήσεις και τις τεχνολογικές εξελίξεις ενώ ταυτόχρονα για την διευκόλυνση τους κάθε έκδοση θα ξεκινά με τον καθορισμό των στόχων και των προτεραιοτήτων και θα καταλήγει με μια ανασκόπηση της προόδου και των επιτευγμάτων. Το μοντέλο μας θα επιτρέπει την προτεραιοποίηση των λειτουργιών και την αξιολόγηση της απόδοσης και λειτουργικότητας της εφαρμογής σε κάθε στάδιο της ανάπτυξης. Μετά από κάθε έκδοση, η ομάδα θα πραγματοποιεί ανασκοπήσεις για να αξιολογήσει τι πήγε καλά, τι μπορεί να βελτιωθεί και να σχεδιάσει τις αλλαγές για την επόμενη έκδοση. Χρησιμοποιώντας πρακτικές συνεχούς ενσωμάτωσης και δοκιμών για την τακτική συγχώνευση των αλλαγών στον κύριο κώδικα και τη διεξαγωγή αυτόματων δοκιμών η ομάδα ανάπτυξης, διασφαλίζει ότι η εφαρμογή παραμένει σταθερή και λειτουργική. Η χρήση εργαλείων ανάλυσης δεδομένων για τη συλλογή και ανάλυση ανατροφοδότησης από τους χρήστες θα βεβαιώνει ότι οι προτάσεις και τα σχόλια των χρηστών θα ενσωματώνονται σε μελλοντικές εκδόσεις για τη βελτίωση της εφαρμογής. Τέλος, καθημερινές συναντήσεις θα εξασφαλίζουν την ενημέρωση της ομάδας σχετικά με την πρόοδο και τυχόν προβλήματα που μπορεί να προκύψουν.
+
+\newpage
+
+\section{Περιγραφή της συνεισφοράς κάθε μέλους της ομάδας}
+
+\\
+
+\textbf{\selectlanguage{english}UML\selectlanguage{greek}:}\\
+Την σχεδίαση του διαγράμματος \selectlanguage{english}UML\selectlanguage{greek} ανέλαβε και ολοκλήρωσε ο \\Αχιλλέας Ζερβός με ΑΜ: \selectlanguage{english}inf2021055\selectlanguage{greek}
+\\
+\\
+\textbf{\selectlanguage{english}Data Frame\selectlanguage{greek}:}\\
+Την ανάπτυξη του \selectlanguage{english}Data Frame\selectlanguage{greek} ανέλαβε και ολοκλήρωσε ο\\ Νικόλας Αναγνωστόπουλος με ΑΜ: \selectlanguage{english}inf2021013\selectlanguage{greek}
+\\\\
+\textbf{\selectlanguage{english}Visualization\selectlanguage{greek}:}\\
+Την ανάπτυξη του \selectlanguage{english}Visualization\selectlanguage{greek} ανέλαβε και ολοκλήρωσε ο \\ Αχιλλέας Ζερβός με ΑΜ: \selectlanguage{english}inf2021055\selectlanguage{greek}
+\\\\
+\textbf{\selectlanguage{english}Machine Learning\selectlanguage{greek}:}\\
+Την ανάπτυξη του \selectlanguage{english}Machine Learning\selectlanguage{greek} ανέλαβε και ολοκλήρωσε ο \\ Νικόλας Αναγνωστόπουλος με ΑΜ: \selectlanguage{english}inf2021013\selectlanguage{greek}
+\\\\
+\textbf{\selectlanguage{english}Info\selectlanguage{greek}:}\\
+Την ανάπτυξη του \selectlanguage{english}Info\selectlanguage{greek} ανέλαβε και ολοκλήρωσε ο \\ Παναγιώτης Μουρελάτος με ΑΜ: \selectlanguage{english}inf2021147\selectlanguage{greek}
+\\\\
+\textbf{Μοντέλο Κύκλου Ζωής Λογισμικού:}\\
+Την ανάπτυξη του Κύκλου Ζωής Λογισμικού ανέλαβε και ολοκλήρωσε ο \\Παναγιώτης Μουρελάτος με ΑΜ: \selectlanguage{english}inf2021147
+\\\\
+\textbf{\selectlanguage{english}Latex\selectlanguage{greek} Αναφορά:}\\
+\selectlanguage{greek}
+Την ανάπτυξη του \selectlanguage{english}Latex\selectlanguage{greek} ανέλαβε και ολοκλήρωσε ο \\ Νικόλας Αναγνωστόπουλος με ΑΜ: \selectlanguage{english}inf2021013 \selectlanguage{greek}\\ με την βοήθεια των υπολοίπων μελών \selectlanguage{english}
+
+
+\newpage
+
+
+
+
+\section{Github Links repositories (github project,latex)}
+
+\subsection{Organization TechTeam-inf2021:}
+\begin{itemize}
+    \item app + dockerfile code: \href{https://github.com/TechTeam-inf2021/data_analysis_dev_app}{TechTeam-inf2021/data\_analysis\_dev\_app}
+    \item Latex code:
+    \href{https://github.com/TechTeam-inf2021/Anafora_latex}{TechTeam-inf2021/latex}
+\end{itemize}
+\selectlanguage{greek}
+\subsection{Νικόλας Αναγνωστόπουλος (ΑΜ: \selectlanguage{english}inf2021013):}
+\selectlanguage{english}
+\begin{itemize}
+    \item app + dockerfile code: \href{https://github.com/inf2021013/data_analysis_dev_app}{inf2021013/data\_analysis\_dev\_app}
+    \item Latex code:
+    \href{https://github.com/inf2021013/Anafora_latex}{inf2021013/latex}
+\end{itemize}
+\selectlanguage{greek}
+\subsection{Αχιλλέας Ζερβός (ΑΜ \selectlanguage{english}inf2021055):}
+\selectlanguage{english}
+\begin{itemize}
+    \item app + dockerfile code: \href{https://github.com/Axileaszervos/data_analysis_dev_app}{Axileaszervos/data\_analysis\_dev\_app}
+    \item Latex code:
+    \href{https://github.com/Axileaszervos/Anafora_latex}{Axileaszervos/latex}
+\end{itemize}
+\selectlanguage{greek}
+\subsection{Παναγιώτης Μουρελάτος (ΑΜ: \selectlanguage{english}inf2021147):}
+\selectlanguage{english}
+\begin{itemize}
+    \item app + dockerfile code: \href{https://github.com/Panmour/data_analysis_dev_app}{Panmour/data\_analysis\_dev\_app}
+    \item Latex code:
+    \href{https://github.com/Panmour/Anafora_latex}{Panmour/latex}
+\end{itemize}
+
+
+\end{document}
